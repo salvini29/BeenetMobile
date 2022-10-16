@@ -20,8 +20,9 @@ import {
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 
-import Test1 from './screens/Test1';
-import Test2 from './screens/Test2';
+import Panel from './screens/Panel';
+import Agregar from './screens/Agregar';
+import Dashboard from './screens/Dashboard';
 
 const Tab = createBottomTabNavigator();
 
@@ -290,12 +291,17 @@ function App() {
             tabBarInactiveTintColor: 'gray',
             headerShown:false
           }} >
-          <Tab.Screen name="Test1" children={()=><Test1 mailUsuarioLogeado={loginUser}/>} options={{
+          <Tab.Screen name="Panel" children={()=><Panel mailUsuarioLogeado={loginUser}/>} options={{
             tabBarIcon: ({ focused, color, size }) => (
               <MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={size} />
             ),
             }}/>
-          <Tab.Screen name="Test2" component={Test2} options={{
+          <Tab.Screen name="Agregar" children={()=><Agregar mailUsuarioLogeado={loginUser}/>} options={{
+            tabBarIcon: ({ focused, color, size }) => (
+              <MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={size} />
+            ),
+            }}/>
+          <Tab.Screen name="Dashboard" children={()=><Dashboard mailUsuarioLogeado={loginUser}/>} options={{
             tabBarIcon: ({ focused, color, size }) => (
               <MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={size} />
             ),

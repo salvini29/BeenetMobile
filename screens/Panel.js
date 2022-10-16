@@ -21,7 +21,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { useSelector, useDispatch } from 'react-redux';
 import { increment, decrement } from '../redux/userAction';
 
-function Test1( props ) {
+function Panel( props ) {
 
   const dispatch = useDispatch();
  
@@ -38,7 +38,6 @@ function Test1( props ) {
   useEffect(() => {
 
     //handleIncrement();handleIncrement();
-
     let data = {
       method: 'POST',
       credentials: 'same-origin',
@@ -106,14 +105,16 @@ function Test1( props ) {
           </Stack>
           <HStack alignItems="center" space={4} justifyContent="space-between">
             <HStack alignItems="center">
-              <Text color="coolGray.600" _dark={{
-              color: "warmGray.200"
-            }} fontWeight="400">
-                Estado:  
-                <Icon as={MaterialCommunityIcons} name="circle" color="coolGray.800" _dark={{
-        color: "warmGray.50"
-      }} />
-              </Text>
+              <Box mr="1">
+                <Text color="coolGray.600" _dark={{
+                color: "warmGray.200"
+              }} fontWeight="400">
+                  Estado:  
+                </Text>
+              </Box>
+              <Box>
+                { item.activa ? <Icon as={MaterialCommunityIcons} name="circle" color="#00FF00" _dark={{color: "warmGray.50"}}/> : <Icon as={MaterialCommunityIcons} name="circle" color="#ff5858" _dark={{color: "warmGray.50"}}/>}
+              </Box>
             </HStack>
           </HStack>
         </Stack>
@@ -137,4 +138,4 @@ function Test1( props ) {
   );
 }
 
-export default Test1;
+export default Panel;
