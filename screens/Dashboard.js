@@ -1,18 +1,53 @@
-import React from 'react';
-import { Text, StyleSheet, View  } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Text, StyleSheet, View, Button  } from 'react-native';
 import { VictoryBar, VictoryChart, VictoryTheme, VictoryLine } from "victory-native";
-
-const data = [
-  { quarter: 1, earnings: 13000 },
-  { quarter: 2, earnings: 16500 },
-  { quarter: 3, earnings: 14250 },
-  { quarter: 4, earnings: 19000 }
-];
-
+import database from '@react-native-firebase/database';
+import { firebase } from '@react-native-firebase/database';
 
 function Dashboard( props ) {
+
+  useEffect(() => {
+
+    /*database()
+    .ref('/did/DEF')
+    .once('value')
+    .then(snapshot => {
+      console.log('User data: ', snapshot.val());
+    });
+
+    fetchChartData();*/
+
+    database().ref('did/DEF').once('value', snapshot =>{
+
+      snapshot.forEach((userSnapshot) => {
+        console.log(userSnapshot);                                     
+      });
+      
+    });
+
+  }, []); 
+
+  const fetchChartData = async () => {
+
+    database().ref('did/').once('value', snapshot =>{
+
+      snapshot.forEach((userSnapshot) => {
+        console.log(userSnapshot);                                     
+      });
+      
+    });
+    //const reference = database().ref('/did/');
+    //reference.limitToFirst(3).once('value');
+    //console.log(reference);
+    /*return database().ref('/User').once('value').then(snapshot => {
+        console.log('User data: ', snapshot.val());
+    });*/
+
+  };
+
   return (
       <View>
+        <Button title="ASD" onPress={fetchChartData} />
         <VictoryChart width={350} theme={VictoryTheme.material}>
 
           <VictoryLine
