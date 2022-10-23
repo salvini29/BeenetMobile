@@ -3,31 +3,36 @@ import { Text, StyleSheet, View, Button  } from 'react-native';
 import { VictoryBar, VictoryChart, VictoryTheme, VictoryLine } from "victory-native";
 import database from '@react-native-firebase/database';
 import { firebase } from '@react-native-firebase/database';
+import { useSelector } from 'react-redux';
+import { useNavigation, useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 function Dashboard( props ) {
+  const isFocused = useIsFocused();
+
+  const userGlobalData = useSelector((store) => store.userGlobalData.userGlobalData);
+  const navigation = useNavigation();
+
+  /*useFocusEffect(() => {
+
+    console.log("Focused");
+
+  },[]);*/
 
   useEffect(() => {
 
-    /*database()
-    .ref('/did/DEF')
-    .once('value')
-    .then(snapshot => {
-      console.log('User data: ', snapshot.val());
-    });
-
-    fetchChartData();*/
-
-    database().ref('did/DEF').once('value', snapshot =>{
+    console.log(isFocused);
+    //console.log(userGlobalData);
+    /*database().ref('did/DEF').once('value', snapshot =>{
 
       snapshot.forEach((userSnapshot) => {
         console.log(userSnapshot);                                     
       });
       
-    });
+    });*/
 
-  }, []); 
+  }, [isFocused]); 
 
-  const fetchChartData = async () => {
+  /*const fetchChartData = async () => {
 
     database().ref('did/').once('value', snapshot =>{
 
@@ -36,18 +41,15 @@ function Dashboard( props ) {
       });
       
     });
-    //const reference = database().ref('/did/');
-    //reference.limitToFirst(3).once('value');
-    //console.log(reference);
-    /*return database().ref('/User').once('value').then(snapshot => {
-        console.log('User data: ', snapshot.val());
-    });*/
 
-  };
+  };*/
 
   return (
       <View>
-        <Button title="ASD" onPress={fetchChartData} />
+        <Text>asddaadsadsads</Text>
+        <Text>asddaadsadsads</Text>
+        <Text>adsdsdasdsa</Text>
+        <Button title="ASD" onPress={() => navigation.navigate('Panel')} />
         <VictoryChart width={350} theme={VictoryTheme.material}>
 
           <VictoryLine

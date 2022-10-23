@@ -19,6 +19,7 @@ import {
   NativeBaseProvider,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useNavigation } from '@react-navigation/native';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { increment, decrement } from '../redux/userAction';
@@ -29,6 +30,8 @@ function Agregar( props ) {
   const [activa, setActiva] = useState('');
 
   const userGlobalData = useSelector((store) => store.userGlobalData.userGlobalData);
+
+  const navigation = useNavigation();
 
   const crearColmena = () => {
     let data = {
@@ -47,10 +50,14 @@ function Agregar( props ) {
         'Content-Type': 'application/json',
       }
     }
-    return fetch('http://10.0.2.2:8000/api/createColmena', data)
+    return fetch('https://beenet.app/api/createColmena', data)
     .then(response => response.json())  // promise
     .then(json => {
       console.log(json);
+      setCodigo('');
+      setNombre('');
+      setActiva('');
+      navigation.navigate('Panel');
     });
   }
 
@@ -82,11 +89,11 @@ function Agregar( props ) {
                   </Stack>
                   <Box width="100%" mt="8">
                     <Box>
-                      <Input InputLeftElement={<Icon as={<MaterialCommunityIcons name="key" />} size={5} ml="2" color="yellow.500" />} placeholder="Codigo Colmena" onChangeText={text => setCodigo(text)}/>
+                      <Input InputLeftElement={<Icon as={<MaterialCommunityIcons name="key" />} size={5} ml="2" color="yellow.500" />} placeholder="Codigo Colmena" value={codigo} onChangeText={text => setCodigo(text)}/>
                       <Text italic fontSize="xs" color="muted.400">Este codigo es unico y nos lo provee el hardware.</Text>
                     </Box>
                     <Box>
-                      <Input InputLeftElement={<Icon as={<MaterialCommunityIcons name="badge-account" />} size={5} ml="2" color="yellow.500" />} placeholder="Nombre Colmena" mt="6" onChangeText={text => setNombre(text)}/>
+                      <Input InputLeftElement={<Icon as={<MaterialCommunityIcons name="badge-account" />} size={5} ml="2" color="yellow.500" />} placeholder="Nombre Colmena" mt="6" value={nombre} onChangeText={text => setNombre(text)}/>
                       <Text italic fontSize="xs" color="muted.400">Opcional y nos servira para distinguir las colmenas.</Text>
                     </Box>
                     <Box>

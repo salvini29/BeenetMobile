@@ -1,5 +1,6 @@
 const initialState = {
   userGlobalData: [],
+  userGlobalEmail: ""
 };
  
 export default (state = initialState, action) => {
@@ -8,6 +9,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         userGlobalData: action.userData,
+      };
+    case 'LOAD_EMAIL':
+      return {
+        ...state,
+        userGlobalEmail: action.userEmail,
       };
     default:
       return state;

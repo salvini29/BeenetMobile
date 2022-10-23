@@ -17,27 +17,29 @@ import {
   NativeBaseProvider,
 } from "native-base";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { useNavigation,useIsFocused } from '@react-navigation/native';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { increment, decrement } from '../redux/userAction';
 
 function Panel( props ) {
+
+  const isFocused = useIsFocused();
 
   const dispatch = useDispatch();
  
   const userGlobalData = useSelector((store) => store.userGlobalData.userGlobalData);
- 
-  /*const handleIncrement = () => {
-    dispatch(increment());
-  };
- 
-  const handleDecrement = () => {
-    dispatch(decrement());
-  };*/
   
   useEffect(() => {
 
-    //handleIncrement();handleIncrement();
+    if(isFocused)
+    {
+      getColmenasData();
+    }
+
+  }, [isFocused]); 
+
+  const getColmenasData = () => {
+
     let data = {
       method: 'POST',
       credentials: 'same-origin',
@@ -51,7 +53,7 @@ function Panel( props ) {
         'Content-Type': 'application/json',
       }
     }
-    fetch('http://10.0.2.2:8000/api/getColmenasUser', data)
+    fetch('https://beenet.app/api/getColmenasUser', data)
     .then(response => response.json())  // promise
     .then(json => {
 
@@ -59,14 +61,16 @@ function Panel( props ) {
         type: "LOAD_COLMENA",
         userData: json
       });
-
+      dispatch({
+        type: "LOAD_EMAIL",
+        userEmail: props.mailUsuarioLogeado
+      });
       console.log(json);
 
     });
 
+  };
 
-
-  }, []); 
 
   const renderItem = ({ item }) => (
     <Box alignItems="center" mt="5">
@@ -113,7 +117,7 @@ function Panel( props ) {
                 </Text>
               </Box>
               <Box>
-                { item.activa ? <Icon as={MaterialCommunityIcons} name="circle" color="#00FF00" _dark={{color: "warmGray.50"}}/> : <Icon as={MaterialCommunityIcons} name="circle" color="#ff5858" _dark={{color: "warmGray.50"}}/>}
+                { item.activa == "1" ? <Icon as={MaterialCommunityIcons} name="circle" color="#00FF00" _dark={{color: "warmGray.50"}}/> : <Icon as={MaterialCommunityIcons} name="circle" color="#ff5858" _dark={{color: "warmGray.50"}}/>}
               </Box>
             </HStack>
           </HStack>
@@ -125,7 +129,7 @@ function Panel( props ) {
   return (
     <NativeBaseProvider>
       <ImageBackground source={require('../resources/img/backblur.jpg')} style={{width: '100%', height: '100%'}}>
-        <View>
+        <View style={{marginTop: '10%'}}>
           <FlatList
             data={userGlobalData}
             renderItem={renderItem}
