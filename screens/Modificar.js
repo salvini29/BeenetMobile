@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Pressable, ImageBackground, FlatList } from 'react-native';
+import { View, Pressable, ImageBackground, Alert} from 'react-native';
 import {
   Box,
   Text,
@@ -21,11 +21,10 @@ import {
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from '@react-navigation/native';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { increment, decrement } from '../redux/userAction';
+import { useSelector } from 'react-redux';
 
-function Agregar( props ) {
-  const [codigo, setCodigo] = useState('');
+function Modificar( props ) {
+  const [identificador, setIdentificador] = useState('');
   const [nombre, setNombre] = useState('');
   const [activa, setActiva] = useState('');
 
@@ -33,16 +32,88 @@ function Agregar( props ) {
 
   const navigation = useNavigation();
 
-  const crearColmena = () => {
+  const fillTexto = (idSeleccionado) => {
+
+    userGlobalData.forEach(colmena  => {
+        if(colmena.id == idSeleccionado){
+          setNombre(colmena.nombre_colmena);
+          setActiva(colmena.activa);
+        }
+      }
+    );
+
+  };
+
+  const modificarColmena = () => {
+
+    if( identificador != '' )
+    {
+      let data = {
+        method: 'POST',
+        credentials: 'same-origin',
+        mode: 'same-origin',
+        body: JSON.stringify({
+          mail_usuario: props.mailUsuarioLogeado,
+          id_colmena_seleccionada: identificador,
+          modif_nombre: nombre,
+          modif_activa: activa,
+          api_key: "JU5jXTLyoVdVRXvlEWctRMSa60RsyUsYhIHXRo1OXbSSQ2r2QvaRvMH0r0gS19tp"
+        }),
+        headers: {
+          'Accept':       'application/json',
+          'Content-Type': 'application/json',
+        }
+      }
+      return fetch('https://beenet.app/api/modifyColmena', data)
+      .then(response => response.json())  // promise
+      .then(json => {
+        console.log(json);
+        setIdentificador('');
+        setNombre('');
+        setActiva('');
+        navigation.navigate('Panel');
+      });
+    }
+    else
+    {
+      Alert.alert("ERROR","Tiene que seleccionar una colmena!");
+    }
+
+  };
+
+  const eliminarColmena = () => {
+    
+    if( identificador != '' )
+    {
+      Alert.alert(
+        "Esta seguro?",
+        "Desea eliminar la colmena?",
+        [
+          {
+            text: "Cancelar",
+            onPress: () => console.log("Cancelado"),
+            style: "cancel"
+          },
+          { text: "Eliminar", onPress: () => apiCallEliminar()}
+        ]
+      );
+    }
+    else
+    {
+      Alert.alert("ERROR","Tiene que seleccionar una colmena!");
+    }
+
+  };
+
+  const apiCallEliminar = () => {
+
     let data = {
       method: 'POST',
       credentials: 'same-origin',
       mode: 'same-origin',
       body: JSON.stringify({
         mail_usuario: props.mailUsuarioLogeado,
-        codigo: codigo,
-        nombre: nombre,
-        activa: activa,
+        id_colmena_seleccionada: identificador,
         api_key: "JU5jXTLyoVdVRXvlEWctRMSa60RsyUsYhIHXRo1OXbSSQ2r2QvaRvMH0r0gS19tp"
       }),
       headers: {
@@ -50,16 +121,18 @@ function Agregar( props ) {
         'Content-Type': 'application/json',
       }
     }
-    return fetch('https://beenet.app/api/createColmena', data)
+    return fetch('https://beenet.app/api/deleteColmena', data)
     .then(response => response.json())  // promise
     .then(json => {
       console.log(json);
-      setCodigo('');
+      setIdentificador('');
       setNombre('');
       setActiva('');
       navigation.navigate('Panel');
     });
-  }
+
+  };
+
 
   return (
     <NativeBaseProvider>
@@ -83,14 +156,18 @@ function Agregar( props ) {
                   <Stack space={2}>
                     <Center>
                       <Heading size="md" ml="-1">
-                        AGREGAR UNA COLMENA
+                        MODIFICAR UNA COLMENA
                       </Heading>
                     </Center>
                   </Stack>
                   <Box width="100%" mt="8">
                     <Box>
-                      <Input InputLeftElement={<Icon as={<MaterialCommunityIcons name="key" />} size={5} ml="2" color="yellow.500" />} placeholder="Codigo Colmena" value={codigo} onChangeText={text => setCodigo(text)}/>
-                      <Text italic fontSize="xs" color="muted.400">Este codigo es unico y nos lo provee el hardware.</Text>
+                      <Select InputLeftElement={<Icon as={<MaterialCommunityIcons name="badge-account" />} size={5} ml="2" color="yellow.500" />} placeholder="Seleccionar Colmena" mt="6" selectedValue={identificador} onValueChange={itemValue => {setIdentificador(itemValue); fillTexto(itemValue) } }>
+                        {userGlobalData.map((colmena) => (
+                          <Select.Item label={colmena.nombre_colmena} value={colmena.id} />
+                        ))}
+                      </Select>
+                      <Text italic fontSize="xs" color="muted.400">Elija la colmena que quiere modificar o eliminar.</Text>
                     </Box>
                     <Box>
                       <Input InputLeftElement={<Icon as={<MaterialCommunityIcons name="badge-account" />} size={5} ml="2" color="yellow.500" />} placeholder="Nombre Colmena" mt="6" value={nombre} onChangeText={text => setNombre(text)}/>
@@ -105,7 +182,10 @@ function Agregar( props ) {
                     </Box>
                   </Box>
                   <Box mt="6">
-                      <Button onPress={() => crearColmena()} colorScheme="green">Guardar</Button>
+                      <Button onPress={() => modificarColmena()} colorScheme="blue">Modificar</Button>
+                  </Box>
+                  <Box mt="1">
+                      <Button onPress={() => eliminarColmena()} colorScheme="red">Eliminar</Button>
                   </Box>
                   <HStack alignItems="center" space={4} justifyContent="space-between">
                     <HStack alignItems="center">
@@ -120,4 +200,4 @@ function Agregar( props ) {
   );
 }
 
-export default Agregar;
+export default Modificar;

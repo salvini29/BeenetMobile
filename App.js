@@ -26,6 +26,7 @@ import MainStack from './navigation/MainStack';
 import Panel from './screens/Panel';
 import Agregar from './screens/Agregar';
 import Dashboard from './screens/Dashboard';
+import Modificar from './screens/Modificar';
 
 const Tab = createBottomTabNavigator();
 
@@ -282,7 +283,7 @@ function App() {
               <MaterialCommunityIcons name={focused ? 'plus-thick' : 'plus-outline'} color={color} size={size} />
             ),
             }}/>
-          <Tab.Screen name="Modificar" children={()=><Dashboard mailUsuarioLogeado={loginUser}/>} options={{
+          <Tab.Screen name="Modificar" children={()=><Modificar mailUsuarioLogeado={loginUser}/>} options={{
             tabBarIcon: ({ focused, color, size }) => (
               <MaterialCommunityIcons name={focused ? 'cog' : 'cog-outline'} color={color} size={size} />
             ),
