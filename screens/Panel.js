@@ -28,6 +28,7 @@ function Panel( props ) {
   const dispatch = useDispatch();
  
   const userGlobalData = useSelector((store) => store.userGlobalData.userGlobalData);
+  const navigation = useNavigation();
   
   useEffect(() => {
 
@@ -71,8 +72,12 @@ function Panel( props ) {
 
   };
 
+  const senderDashboard = (codigo_c, nombre_c, activa_c) => {
+    navigation.navigate('Dashboard',{codigo:codigo_c, nombre:nombre_c, activa: activa_c});
+  };
 
   const renderItem = ({ item }) => (
+  <Pressable onPress={() => senderDashboard(item.codigo_colmena, item.nombre_colmena, item.activa)}>
     <Box alignItems="center" mt="5">
       <Box maxW="80" rounded="lg" overflow="hidden" borderColor="coolGray.200" borderWidth="1" _dark={{
       borderColor: "coolGray.600",
@@ -124,6 +129,7 @@ function Panel( props ) {
         </Stack>
       </Box>
     </Box>
+    </Pressable>
   );
 
   return (

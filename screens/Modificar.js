@@ -164,7 +164,7 @@ function Modificar( props ) {
                     <Box>
                       <Select InputLeftElement={<Icon as={<MaterialCommunityIcons name="badge-account" />} size={5} ml="2" color="yellow.500" />} placeholder="Seleccionar Colmena" mt="6" selectedValue={identificador} onValueChange={itemValue => {setIdentificador(itemValue); fillTexto(itemValue) } }>
                         {userGlobalData.map((colmena) => (
-                          <Select.Item label={colmena.nombre_colmena} value={colmena.id} />
+                          <Select.Item label={colmena.nombre_colmena} value={colmena.id} key={colmena.id} />
                         ))}
                       </Select>
                       <Text italic fontSize="xs" color="muted.400">Elija la colmena que quiere modificar o eliminar.</Text>
