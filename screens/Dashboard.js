@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, View, Button, ImageBackground } from 'react-native';
-import { VictoryBar, VictoryChart, VictoryTheme, VictoryLine } from "victory-native";
+import { VictoryVoronoiContainer, VictoryChart, VictoryTheme, VictoryLine,VictoryLabel, VictoryAxis } from "victory-native";
 import database from '@react-native-firebase/database';
 import { firebase } from '@react-native-firebase/database';
 import {
@@ -146,74 +146,90 @@ function Dashboard( {route} ) {
           <Box backgroundColor="white" width="93%" rounded="lg" overflow="hidden" >
             <VictoryChart
               theme={VictoryTheme.material}
+              containerComponent={<VictoryVoronoiContainer labels={({ datum }) => `${(datum.y)}°, ${(datum.x)}`}/>}
             >
+              <VictoryLabel text="Temperatura" x={180} y={30} textAnchor="middle"/>
               <VictoryLine
                 style={{
-                  data: { stroke: "#c43a31" },
+                  data: { stroke: "#3e95cd", strokeWidth:3 },
                   parent: { border: "1px solid #ccc"}
                 }}
                 data={dataTempI}
               />
               <VictoryLine
                 style={{
-                  data: { stroke: "#c43a31" },
+                  data: { stroke: "#8e5ea2", strokeWidth:3 },
                   parent: { border: "1px solid #ccc"}
                 }}
                 data={dataTempE}
               />
+              <VictoryAxis dependentAxis/>
+              <VictoryAxis tickFormat={(t) => `t`}/>
             </VictoryChart>
           </Box>
           <Box backgroundColor="white" width="93%" rounded="lg" overflow="hidden" mt="5">
             <VictoryChart
               theme={VictoryTheme.material}
+              containerComponent={<VictoryVoronoiContainer labels={({ datum }) => `${(datum.y)}%, ${(datum.x)}`}/>}
             >
+              <VictoryLabel text="Humedad" x={180} y={30} textAnchor="middle"/>
               <VictoryLine
                 style={{
-                  data: { stroke: "#c43a31" },
+                  data: { stroke: "#3e95cd", strokeWidth:3 },
                   parent: { border: "1px solid #ccc"}
                 }}
                 data={dataHumI}
               />
               <VictoryLine
                 style={{
-                  data: { stroke: "#c43a31" },
+                  data: { stroke: "#8e5ea2", strokeWidth:3 },
                   parent: { border: "1px solid #ccc"}
                 }}
                 data={dataHumE}
               />
+              <VictoryAxis dependentAxis/>
+              <VictoryAxis tickFormat={(t) => `t`}/>
             </VictoryChart>
           </Box>
           <Box backgroundColor="white" width="93%" rounded="lg" overflow="hidden" mt="5">
             <VictoryChart
               theme={VictoryTheme.material}
+              containerComponent={<VictoryVoronoiContainer labels={({ datum }) => `${(datum.y)}hPa, ${(datum.x)}`}/>}
             >
+              <VictoryLabel text="Presión" x={180} y={30} textAnchor="middle"/>
               <VictoryLine
                 style={{
-                  data: { stroke: "#c43a31" },
+                  data: { stroke: "#3e95cd", strokeWidth:3 },
                   parent: { border: "1px solid #ccc"}
                 }}
                 data={dataPresI}
               />
               <VictoryLine
                 style={{
-                  data: { stroke: "#c43a31" },
+                  data: { stroke: "#8e5ea2", strokeWidth:3 },
                   parent: { border: "1px solid #ccc"}
                 }}
                 data={dataPresE}
               />
+              <VictoryAxis dependentAxis/>
+              <VictoryAxis tickFormat={(t) => `t`}/>
             </VictoryChart>
           </Box>
           <Box backgroundColor="white" width="93%" rounded="lg" overflow="hidden" mt="5">
             <VictoryChart
               theme={VictoryTheme.material}
+              containerComponent={<VictoryVoronoiContainer labels={({ datum }) => `${(datum.y)} Kg, ${(datum.x)}`}/>}
             >
+              <VictoryLabel text="Peso" x={180} y={30} textAnchor="middle"/>
               <VictoryLine
                 style={{
-                  data: { stroke: "#c43a31" },
+                  data: { stroke: "#3e95cd", strokeWidth:3 },
                   parent: { border: "1px solid #ccc"}
                 }}
                 data={dataPeso}
               />
+              <VictoryAxis dependentAxis/>
+              <VictoryAxis tickFormat={(t) => `t`}/>
             </VictoryChart>
           </Box>
         </ScrollView>
