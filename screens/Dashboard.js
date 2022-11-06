@@ -137,6 +137,30 @@ function Dashboard( {route} ) {
 
   }, []); 
 
+  const countTemp = (function(n) {
+    return function() {
+      n += 1;
+      return n;
+    }
+  }(-1));
+  const countHumd = (function(n) {
+    return function() {
+      n += 1;
+      return n;
+    }
+  }(-1));
+  const countPres = (function(n) {
+    return function() {
+      n += 1;
+      return n;
+    }
+  }(-1));
+  const countPeso = (function(n) {
+    return function() {
+      n += 1;
+      return n;
+    }
+  }(-1));
 
   return (
     <NativeBaseProvider>
@@ -164,7 +188,7 @@ function Dashboard( {route} ) {
                 data={dataTempE}
               />
               <VictoryAxis dependentAxis/>
-              <VictoryAxis tickFormat={(t) => `t`}/>
+              <VictoryAxis tickFormat={(t) => `t`+countTemp()}/>
             </VictoryChart>
           </Box>
           <Box backgroundColor="white" width="93%" rounded="lg" overflow="hidden" mt="5">
@@ -188,7 +212,7 @@ function Dashboard( {route} ) {
                 data={dataHumE}
               />
               <VictoryAxis dependentAxis/>
-              <VictoryAxis tickFormat={(t) => `t`}/>
+              <VictoryAxis tickFormat={(t) => `t`+countHumd()}/>
             </VictoryChart>
           </Box>
           <Box backgroundColor="white" width="93%" rounded="lg" overflow="hidden" mt="5">
@@ -212,7 +236,7 @@ function Dashboard( {route} ) {
                 data={dataPresE}
               />
               <VictoryAxis dependentAxis/>
-              <VictoryAxis tickFormat={(t) => `t`}/>
+              <VictoryAxis tickFormat={(t) => `t`+countPres()}/>
             </VictoryChart>
           </Box>
           <Box backgroundColor="white" width="93%" rounded="lg" overflow="hidden" mt="5">
@@ -229,7 +253,7 @@ function Dashboard( {route} ) {
                 data={dataPeso}
               />
               <VictoryAxis dependentAxis/>
-              <VictoryAxis tickFormat={(t) => `t`}/>
+              <VictoryAxis tickFormat={(t) => `t`+countPeso()}/>
             </VictoryChart>
           </Box>
         </ScrollView>
