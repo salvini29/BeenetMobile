@@ -27,17 +27,8 @@ function Panel( props ) {
  
   const userGlobalData = useSelector((store) => store.userGlobalData.userGlobalData);
  
-  /*const handleIncrement = () => {
-    dispatch(increment());
-  };
- 
-  const handleDecrement = () => {
-    dispatch(decrement());
-  };*/
-  
   useEffect(() => {
 
-    //handleIncrement();handleIncrement();
     let data = {
       method: 'POST',
       credentials: 'same-origin',

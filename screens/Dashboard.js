@@ -7,42 +7,22 @@ import { firebase } from '@react-native-firebase/database';
 function Dashboard( props ) {
 
   useEffect(() => {
-
-    /*database()
-    .ref('/did/DEF')
-    .once('value')
-    .then(snapshot => {
-      console.log('User data: ', snapshot.val());
-    });
-
-    fetchChartData();*/
-
-    database().ref('did/DEF').once('value', snapshot =>{
+    database().ref('Posts/').once('value', snapshot =>{
 
       snapshot.forEach((userSnapshot) => {
         console.log(userSnapshot);                                     
       });
       
     });
-
   }, []); 
 
-  const fetchChartData = async () => {
+  const fetchChartData = async() => {
 
-    database().ref('did/').once('value', snapshot =>{
-
+    database().ref('Posts/').once('value', snapshot =>{
       snapshot.forEach((userSnapshot) => {
         console.log(userSnapshot);                                     
       });
-      
     });
-    //const reference = database().ref('/did/');
-    //reference.limitToFirst(3).once('value');
-    //console.log(reference);
-    /*return database().ref('/User').once('value').then(snapshot => {
-        console.log('User data: ', snapshot.val());
-    });*/
-
   };
 
   return (
