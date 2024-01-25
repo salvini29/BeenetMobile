@@ -19,10 +19,14 @@ import {
 
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import 'react-native-gesture-handler';
+
+import MainStack from './navigation/MainStack';
 
 import Panel from './screens/Panel';
 import Agregar from './screens/Agregar';
 import Dashboard from './screens/Dashboard';
+import Modificar from './screens/Modificar';
 
 const Tab = createBottomTabNavigator();
 
@@ -48,41 +52,6 @@ function App() {
   const [user, setUser] = useState(false);
   const [showLogin, setshowLogin] = useState(true);
 
-  /*function onAuthStateChanged(user) {
-    setUser(user);
-    if (initializing) setInitializing(false);
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
-
-  const createUser = () => {
-      auth()
-      .signInWithEmailAndPassword('jane.doe@example.com', 'SuperSecretPassword!')
-      .then(() => {
-        console.log('User account created & signed in!');
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
-        }
-
-        if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
-        }
-
-        console.error(error);
-      });
-  }
-
-  const logoutUser = () => {
-      auth()
-        .signOut()
-        .then(() => console.log('User signed out!'));
-  }*/
-
   const logearUser = () => {
     let data = {
       method: 'POST',
@@ -98,7 +67,7 @@ function App() {
         'Content-Type': 'application/json',
       }
     }
-    return fetch('http://10.0.2.2:8000/api/loginUser', data)
+    return fetch('https://beenet.app/api/loginUser', data)
     .then(response => response.json())  // promise
     .then(json => {
       if( json == true )
@@ -128,7 +97,7 @@ function App() {
         'Content-Type': 'application/json',
       }
     }
-    return fetch('http://10.0.2.2:8000/api/registerUser', data)
+    return fetch('https://beenet.app/api/registerUser', data)
     .then(response => response.json())  // promise
     .then(json => {
       if( json.email == registerUser )
@@ -184,11 +153,11 @@ function App() {
               <VStack space={3} mt="5">
                 <FormControl>
                   <FormControl.Label>Mail</FormControl.Label>
-                  <Input onChangeText={text => setloginUser(text)}/>
+                  <Input autoCapitalize='none' onChangeText={text => setloginUser(text)}/>
                 </FormControl>
                 <FormControl>
                   <FormControl.Label>Contraseña</FormControl.Label>
-                  <Input type="password" onChangeText={text => setloginPass(text)}/>
+                  <Input type="password" autoCapitalize='none' onChangeText={text => setloginPass(text)}/>
                 </FormControl>
                 <Button mt="2" onPress={() => logearUser()}>
                   Loguearse
@@ -247,30 +216,41 @@ function App() {
               <VStack space={3} mt="5">
                 <FormControl>
                   <FormControl.Label>Nombre</FormControl.Label>
-                  <Input onChangeText={text => setregisterName(text)}/>
+                  <Input autoCapitalize='none' onChangeText={text => setregisterName(text)}/>
                 </FormControl>
                 <FormControl>
                   <FormControl.Label>Mail</FormControl.Label>
-                  <Input onChangeText={text => setregisterUser(text)}/>
+                  <Input autoCapitalize='none' onChangeText={text => setregisterUser(text)}/>
                 </FormControl>
                 <FormControl>
                   <FormControl.Label>Contraseña</FormControl.Label>
-                  <Input type="password" onChangeText={text => setregisterPass(text)}/>
+                  <Input type="password" autoCapitalize='none' onChangeText={text => setregisterPass(text)}/>
                 </FormControl>
                 <FormControl>
                   <FormControl.Label>Confirmar Contraseña</FormControl.Label>
-                  <Input type="password" onChangeText={text => setregisterConf(text)}/>
-                  <Link
-                    _text={{
-                      color: "indigo.500",
-                      fontWeight: "medium",
-                      fontSize: "sm",
-                    }}
-                    onPress={() => setshowLogin(true)}
-                  >
-                  Login
-                </Link>
+                  <Input type="password" autoCapitalize='none' onChangeText={text => setregisterConf(text)}/>
                 </FormControl>
+                <HStack mt="6" justifyContent="center">
+                    <Text
+                      fontSize="sm"
+                      color="coolGray.600"
+                      _dark={{
+                        color: "warmGray.200",
+                      }}
+                    >
+                      Ya tengo cuenta.{" "}
+                    </Text>
+                    <Link
+                      _text={{
+                        color: "indigo.500",
+                        fontWeight: "medium",
+                        fontSize: "sm",
+                      }}
+                      onPress={() => setshowLogin(true)}
+                    >
+                    Loguearme
+                    </Link>
+                </HStack>
                 <Button mt="2" onPress={() => registrarUser()}>
                   Registrarse
                 </Button>
@@ -289,21 +269,23 @@ function App() {
         <Tab.Navigator screenOptions={{
             tabBarActiveTintColor: '#3F51B5',
             tabBarInactiveTintColor: 'gray',
-            headerShown:false
+            headerShown:false,
+            tabBarHideOnKeyboard: true,
+            tabBarShowLabel: false,
           }} >
-          <Tab.Screen name="Panel" children={()=><Panel mailUsuarioLogeado={loginUser}/>} options={{
+          <Tab.Screen name="PanelTab" children={()=><MainStack mailUsuarioLogeado={loginUser}/>} options={{
             tabBarIcon: ({ focused, color, size }) => (
-              <MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={size} />
+              <MaterialCommunityIcons name={focused ? 'text-box' : 'text-box-outline'} color={color} size={size} />
             ),
             }}/>
           <Tab.Screen name="Agregar" children={()=><Agregar mailUsuarioLogeado={loginUser}/>} options={{
             tabBarIcon: ({ focused, color, size }) => (
-              <MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={size} />
+              <MaterialCommunityIcons name={focused ? 'plus-thick' : 'plus-outline'} color={color} size={size} />
             ),
             }}/>
-          <Tab.Screen name="Dashboard" children={()=><Dashboard mailUsuarioLogeado={loginUser}/>} options={{
+          <Tab.Screen name="Modificar" children={()=><Modificar mailUsuarioLogeado={loginUser}/>} options={{
             tabBarIcon: ({ focused, color, size }) => (
-              <MaterialCommunityIcons name={focused ? 'account' : 'account-outline'} color={color} size={size} />
+              <MaterialCommunityIcons name={focused ? 'cog' : 'cog-outline'} color={color} size={size} />
             ),
             }}/>
         </Tab.Navigator>
